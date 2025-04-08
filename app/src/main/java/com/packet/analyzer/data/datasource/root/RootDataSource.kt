@@ -2,127 +2,97 @@ package com.packet.analyzer.data.datasource.root
 
 import android.content.Context
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.preferencesDataStore
-import com.packet.analyzer.data.util.PreferencesKeys
 import com.packet.analyzer.data.util.RootStatus
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeoutOrNull
-import java.io.IOException
+import java.io.BufferedReader
+import java.io.DataOutputStream
+import java.io.InputStreamReader
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
 @Singleton
-class RootDataSource @Inject constructor(
-    private val context: Context
-) {
-    private val dataStore = context.dataStore
-    private val commandTimeoutMillis = 5000L
+class RootDataSource @Inject constructor(private val context: Context) {
 
-    val rootStatusFlow: Flow<RootStatus> = dataStore.data
-        .catch { exception ->
-            Log.e("RootDataSource", "Error reading DataStore", exception)
-            if (exception is IOException) {
-                emit(androidx.datastore.preferences.core.emptyPreferences())
-            } else {
-                throw exception
+    private val _rootStatusFlow = MutableStateFlow(RootStatus.UNKNOWN)
+    val rootStatusFlow: Flow<RootStatus> = _rootStatusFlow.asStateFlow()
+
+    init {
+
+        checkRootAccessInternal()
+    }
+
+    fun getCurrentRootStatus(): RootStatus = _rootStatusFlow.value
+
+    private fun checkRootAccessInternal() {
+
+
+        try {
+            val process = Runtime.getRuntime().exec("su -c id")
+            val os = DataOutputStream(process.outputStream)
+            os.writeBytes("exit\n")
+            os.flush()
+            os.close()
+            val exitCode = process.waitFor()
+            _rootStatusFlow.update {
+                if (exitCode == 0) RootStatus.GRANTED else RootStatus.DENIED
             }
+            Log.i("RootDataSource", "Root check finished with exit code: $exitCode")
+        } catch (e: Exception) {
+            Log.e("RootDataSource", "Root check failed", e)
+            _rootStatusFlow.update { RootStatus.DENIED }
         }
-        .map { preferences ->
-            val statusString = preferences[PreferencesKeys.ROOT_STATUS] ?: RootStatus.UNKNOWN.name
-            try {
-                RootStatus.valueOf(statusString)
-            } catch (e: IllegalArgumentException) {
-                Log.e("RootDataSource", "Invalid root status in DataStore: $statusString")
-                RootStatus.UNKNOWN
-            }
-        }
+    }
 
     suspend fun checkOrRequestRootAccess(): Boolean = withContext(Dispatchers.IO) {
-        Log.d("RootDataSource", "Checking/Requesting Root access...")
+        checkRootAccessInternal()
+        delay(100)
+        return@withContext _rootStatusFlow.value == RootStatus.GRANTED
+    }
+
+    suspend fun executeRootCommand(command: String): Boolean = withContext(Dispatchers.IO) {
         var process: Process? = null
-        var granted = false
-        val startTime = System.currentTimeMillis()
-
+        var os: DataOutputStream? = null
+        var success = false
+        Log.d("RootDataSource", "Executing command: su -c \"$command\"")
         try {
-            process = Runtime.getRuntime().exec(arrayOf("su", "-c", "id"))
+            process = Runtime.getRuntime().exec("su")
+            os = DataOutputStream(process.outputStream)
+            os.writeBytes("$command\n")
+            os.flush()
+            os.writeBytes("exit\n")
+            os.flush()
 
-            val exitValue = withTimeoutOrNull(commandTimeoutMillis) {
-                process.waitFor()
-            }
 
-            if (exitValue == null) {
+            // val reader = BufferedReader(InputStreamReader(process.inputStream))
+            // var line: String?
+            // while (reader.readLine().also { line = it } != null) {
+            //     Log.d("RootDataSource", "su stdout: $line")
+            // }
+            // val errorReader = BufferedReader(InputStreamReader(process.errorStream))
+            // while (errorReader.readLine().also { line = it } != null) {
+            //      Log.e("RootDataSource", "su stderr: $line")
+            // }
 
-                Log.w("RootDataSource", "Root command 'su -c id' timed out after $commandTimeoutMillis ms.")
-                granted = false
-                process?.destroyForcibly()
-            } else {
-                granted = (exitValue == 0)
-                Log.d("RootDataSource", "Root command exit value: $exitValue. Granted: $granted")
-            }
 
-        } catch (e: IOException) {
-            Log.e("RootDataSource", "IOException during root check", e)
-            granted = false
-        } catch (e: SecurityException) {
-            Log.e("RootDataSource", "SecurityException during root check (SELinux?)", e)
-            granted = false
-        } catch (e: InterruptedException) {
-            Log.w("RootDataSource", "Root check interrupted")
-            Thread.currentThread().interrupt()
-            granted = false
-        } catch (e: TimeoutCancellationException) {
-            Log.w("RootDataSource", "Root command timed out (caught TimeoutCancellationException).")
-            granted = false
-            process?.destroyForcibly()
+            val exitCode = process.waitFor()
+            success = (exitCode == 0)
+            Log.i("RootDataSource", "Command exited with code: $exitCode. Success: $success")
+
         } catch (e: Exception) {
-            Log.e("RootDataSource", "Unexpected error during root check", e)
-            granted = false
+            Log.e("RootDataSource", "Failed to execute root command: $command", e)
+            success = false
         } finally {
+            try {
+                os?.close()
+            } catch (e: Exception) { /* ignore */ }
             process?.destroy()
-            val duration = System.currentTimeMillis() - startTime
-            Log.d("RootDataSource", "Root check finished in ${duration}ms. Result: $granted")
         }
-
-        val currentStatus = getCurrentRootStatus()
-        val newStatus = if (granted) RootStatus.GRANTED else RootStatus.DENIED
-        if (currentStatus != newStatus) {
-            updateRootStatus(newStatus)
-            Log.d("RootDataSource", "Root status updated to: $newStatus")
-        } else {
-            Log.d("RootDataSource", "Root status ($currentStatus) hasn't changed.")
-        }
-
-        return@withContext granted
-    }
-
-    private suspend fun updateRootStatus(newStatus: RootStatus) {
-        try {
-            dataStore.edit { settings ->
-                settings[PreferencesKeys.ROOT_STATUS] = newStatus.name
-            }
-        } catch (e: Exception) {
-            Log.e("RootDataSource", "Failed to update root status in DataStore", e)
-        }
-    }
-
-    suspend fun getCurrentRootStatus(): RootStatus = withContext(Dispatchers.IO) {
-        try {
-            rootStatusFlow.first()
-        } catch (e: Exception) {
-            Log.e("RootDataSource", "Failed to get current root status from DataStore", e)
-            RootStatus.UNKNOWN
-        }
+        return@withContext success
     }
 }

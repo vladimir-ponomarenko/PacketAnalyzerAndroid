@@ -26,7 +26,6 @@ fun AppBottomNavigationBar(navController: NavController) {
                 onClick = {
                     if (currentRoute != screen.route) {
                         navController.navigate(screen.route) {
-                            // Переход к верхнему элементу в стеке, если он уже есть
                             popUpTo(navController.graph.startDestinationId) {
                                 saveState = true
                             }

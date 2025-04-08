@@ -21,6 +21,23 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        externalNativeBuild {
+            cmake {
+                abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            }
+        }
+        ndk {
+            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
+
+        sourceSets {
+            getByName("main") {
+                jniLibs.srcDirs("src/main/jniLibs", "libs/pcapd/dist")
+            }
+        }
+
+        ndkVersion = "25.1.8937393"
     }
 
     buildTypes {
@@ -48,6 +65,12 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
         }
     }
 }

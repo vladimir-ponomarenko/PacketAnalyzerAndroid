@@ -54,7 +54,6 @@ fun AppListItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                 )
             }
-            // Здесь в будущем можно добавить отображение трафика справа
             // Spacer(modifier = Modifier.width(8.dp))
             // Column(horizontalAlignment = Alignment.End) { ... }
         }

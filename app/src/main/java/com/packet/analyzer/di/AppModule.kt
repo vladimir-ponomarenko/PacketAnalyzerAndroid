@@ -34,14 +34,14 @@ object AppModule {
         return AppInfoDataSource(context)
     }
 
+
     @Provides
     @Singleton
     fun provideTrafficRepository(
         context: Context,
         rootDataSource: RootDataSource,
         appInfoDataSource: AppInfoDataSource
-        // nativeDataSource: NativeTrafficDataSource
     ): TrafficRepository {
-        return TrafficRepositoryImpl(context, rootDataSource, appInfoDataSource /*, nativeDataSource */)
+        return TrafficRepositoryImpl(context, rootDataSource, appInfoDataSource)
     }
 }

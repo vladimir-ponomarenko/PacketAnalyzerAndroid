@@ -20,7 +20,6 @@ private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
     tertiary = Pink80,
-    // Цвета для фона заголовков и разделителей
     surfaceVariant = Color(0xFF49454F),
     outlineVariant = Color(0xFF49454F)
 )
@@ -29,7 +28,6 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    // Цвета для фона заголовков и разделителей
     surfaceVariant = Color(0xFFE7E0EC),
     outlineVariant = Color(0xFFCAC4D0)
 

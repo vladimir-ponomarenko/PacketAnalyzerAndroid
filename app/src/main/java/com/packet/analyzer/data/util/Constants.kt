@@ -3,7 +3,7 @@ package com.packet.analyzer.data.util
 import androidx.datastore.preferences.core.stringPreferencesKey
 
 object PreferencesKeys {
-    // Ключ для сохранения статуса root в DataStore
+    // Статус root в DataStore
     val ROOT_STATUS = stringPreferencesKey("root_status")
 }
 
