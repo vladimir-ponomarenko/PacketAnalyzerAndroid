@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Монитор Трафика</string>
+
+    <!-- Navigation -->
+    <string name="nav_settings">Настройки</string>
+    <string name="nav_capture">Захват</string>
+    <string name="nav_app_list">Список</string>
+
+    <!-- Capture Screen -->
+    <string name="capture_start">Начать захват</string>
+    <string name="capture_stop">Остановить захват</string>
+    <string name="status_idle">Ожидание</string>
+    <string name="status_capturing">Идет захват…</string>
+    <string name="status_starting">Запуск…</string>
+    <string name="status_stopping">Остановка…</string>
+    <string name="status_error">Ошибка</string>
+    <string name="status_no_root">Root-доступ запрещен или недоступен.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Настройки</string>
+    <string name="settings_placeholder">Здесь будут настройки</string>
+
+    <!-- App List Screen -->
+    <string name="app_list_title">Трафик приложений</string>
+    <string name="app_list_placeholder">Здесь будет статистика трафика приложений</string>
+</resources>
