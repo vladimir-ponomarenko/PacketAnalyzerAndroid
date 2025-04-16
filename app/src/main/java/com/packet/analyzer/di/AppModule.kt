@@ -1,6 +1,7 @@
 package com.packet.analyzer.di
 
 import android.content.Context
+import com.packet.analyzer.data.datasource.root.RootDataSource
 import com.packet.analyzer.data.repository.TrafficRepository
 import com.packet.analyzer.data.repository.TrafficRepositoryImpl
 import dagger.Module
@@ -20,14 +21,19 @@ object AppModule {
         return context
     }
 
+    @Provides
+    @Singleton
+    fun provideRootDataSource(@ApplicationContext context: Context): RootDataSource {
+        return RootDataSource(context)
+    }
 
     @Provides
     @Singleton
     fun provideTrafficRepository(
-        context: Context
+        context: Context,
+        rootDataSource: RootDataSource
+        // nativeDataSource: NativeTrafficDataSource
     ): TrafficRepository {
-        return TrafficRepositoryImpl( /*, nativeDataSource */)
+        return TrafficRepositoryImpl(context, rootDataSource /*, nativeDataSource */)
     }
-
-
 }

@@ -1,25 +1,22 @@
 package com.packet.analyzer.data.repository
 
+import com.packet.analyzer.data.util.RootStatus
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-// Интерфейс для взаимодействия с данными трафика и управлением захватом
 interface TrafficRepository {
 
-    // Получить Flow с обновлениями статуса захвата (запущен/остановлен)
     fun getCaptureStatusUpdates(): StateFlow<Boolean>
 
-    // TODO: Добавить Flow для получения данных о трафике
-    // fun getTrafficUpdates(): Flow<List<AppTrafficInfo>>
+    fun getRootStatusUpdates(): Flow<RootStatus>
 
-    // Проверить наличие root-доступа
-    suspend fun checkRootAccess(): Boolean
+    suspend fun checkOrRequestRootAccess(): Boolean
 
-    // Начать захват трафика
+
     suspend fun startCapture()
 
-    // Остановить захват трафика
     suspend fun stopCapture()
 
-    // TODO: Добавить метод для получения списка приложений
+    // fun getTrafficUpdates(): Flow<List<AppTrafficInfo>>
     // suspend fun getAppList(): List<AppData>
 }

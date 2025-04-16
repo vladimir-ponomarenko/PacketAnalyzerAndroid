@@ -1,12 +1,6 @@
 package com.packet.analyzer.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -17,10 +11,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.packet.analyzer.R
+import com.packet.analyzer.data.util.RootStatus
 import com.packet.analyzer.ui.viewmodel.CaptureControlViewModel
 import com.packet.analyzer.ui.viewmodel.CaptureUiState
 
@@ -32,16 +29,24 @@ fun CaptureControlScreen(
 
     CaptureControlContent(
         uiState = uiState,
-        onCaptureToggle = viewModel::toggleCaptureState
+        onCaptureToggle = viewModel::toggleCaptureState,
+        onClearError = viewModel::clearError
     )
 }
 
 @Composable
 fun CaptureControlContent(
     uiState: CaptureUiState,
-    onCaptureToggle: () -> Unit
-    // onClearError: () -> Unit
+    onCaptureToggle: () -> Unit,
+    onClearError: () -> Unit
 ) {
+    val statusTextColor = when {
+        uiState.error != null -> MaterialTheme.colorScheme.error
+        uiState.rootStatus == RootStatus.DENIED || uiState.rootStatus == RootStatus.UNKNOWN -> Color(0xFFFFA726)
+        else -> MaterialTheme.colorScheme.onSurface
+    }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +75,9 @@ fun CaptureControlContent(
 
         Text(
             text = stringResource(id = uiState.statusTextResId),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
+            color = statusTextColor,
+            textAlign = TextAlign.Center
         )
 
         uiState.error?.let { errorMsg ->

@@ -14,18 +14,18 @@ import androidx.compose.ui.unit.dp
 import com.packet.analyzer.R
 
 @Composable
-fun SettingsScreen() {
+fun AppListScreen() {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(id = R.string.settings_title),
+            text = stringResource(id = R.string.app_list_title),
             style = MaterialTheme.typography.headlineMedium
         )
         Text(
-            text = stringResource(id = R.string.settings_placeholder),
+            text = stringResource(id = R.string.app_list_placeholder),
             style = MaterialTheme.typography.bodyLarge
         )
     }
