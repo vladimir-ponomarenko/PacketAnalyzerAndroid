@@ -1,5 +1,6 @@
 package com.packet.analyzer.data.repository
 
+import com.packet.analyzer.data.model.AppInfo
 import com.packet.analyzer.data.util.RootStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,6 +13,7 @@ interface TrafficRepository {
 
     suspend fun checkOrRequestRootAccess(): Boolean
 
+    suspend fun getAppList(includeSystemApps: Boolean): List<AppInfo>
 
     suspend fun startCapture()
 

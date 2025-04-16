@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+    <!--Требуется для того, чтобы отобразить список ВСЕХ приложений,
+     то есть не только системных... -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission"   />
+
+
+
     <application
         android:name=".PacketAnalyzerApp"
         android:allowBackup="true"

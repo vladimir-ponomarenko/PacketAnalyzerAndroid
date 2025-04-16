@@ -27,6 +27,6 @@
     <string name="settings_root_status_unknown">Unknown</string>
 
     <!-- App List Screen -->
-    <string name="app_list_title">App Traffic</string>
+    <string name="app_list_title">Apps</string>
     <string name="app_list_placeholder">App traffic statistics will be shown here</string>
 </resources>

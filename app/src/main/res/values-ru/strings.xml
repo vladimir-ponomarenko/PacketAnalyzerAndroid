@@ -4,7 +4,7 @@
     <!-- Navigation -->
     <string name="nav_settings">Настройки</string>
     <string name="nav_capture">Захват</string>
-    <string name="nav_app_list">Список</string>
+    <string name="nav_app_list">Приложения</string>
 
     <!-- Capture Screen -->
     <string name="capture_start">Начать захват</string>
@@ -27,6 +27,6 @@
     <string name="settings_root_status_unknown">Неизвестный статус</string>
 
     <!-- App List Screen -->
-    <string name="app_list_title">Трафик приложений</string>
+    <string name="app_list_title">Приложения</string>
     <string name="app_list_placeholder">Здесь будет статистика трафика приложений</string>
 </resources>
