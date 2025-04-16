@@ -1,6 +1,13 @@
 package com.packet.analyzer.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -16,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.packet.analyzer.R
 import com.packet.analyzer.data.util.RootStatus
 import com.packet.analyzer.ui.viewmodel.CaptureControlViewModel
 import com.packet.analyzer.ui.viewmodel.CaptureUiState
@@ -63,11 +69,13 @@ fun CaptureControlContent(
             colors = ButtonDefaults.buttonColors(
                 containerColor = if (uiState.isCapturing) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
                 disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
-            )
+            ),
+            contentPadding = PaddingValues(0.dp)
         ) {
             Text(
                 text = stringResource(id = uiState.buttonTextResId),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center
             )
         }
 
@@ -87,7 +95,6 @@ fun CaptureControlContent(
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center
-                // modifier = Modifier.clickable { onClearError() }
             )
         }
     }

@@ -15,16 +15,16 @@
     <string name="status_stopping">Stopping…</string>
     <string name="status_error">Error</string>
     <string name="status_checking_root">Checking Root…</string>
-    <string name="status_no_root">Root access denied or unavailable.</string>
+    <string name="status_no_root">Root access denied or unavailable</string>
     <string name="status_root_unknown">Check Root Status in Settings</string>
 
     <!-- Settings Screen -->
     <string name="settings_title">Settings</string>
-    <string name="settings_placeholder">Other settings will be here.</string>
+    <string name="settings_placeholder">Other settings will be here</string>
     <string name="settings_root_access">Root Access</string>
     <string name="settings_root_status_granted">Granted</string>
     <string name="settings_root_status_denied">Denied</string>
-    <string name="settings_root_status_unknown">Unknown (Tap to check)</string>
+    <string name="settings_root_status_unknown">Unknown</string>
 
     <!-- App List Screen -->
     <string name="app_list_title">App Traffic</string>

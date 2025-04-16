@@ -15,7 +15,7 @@
     <string name="status_stopping">Остановка…</string>
     <string name="status_error">Ошибка</string>
     <string name="status_checking_root">Проверка Root…</string>
-    <string name="status_no_root">Root-доступ запрещен или недоступен.</string>
+    <string name="status_no_root">Root-доступ запрещен или недоступен</string>
     <string name="status_root_unknown">Проверьте Root в Настройках</string>
 
     <!-- Settings Screen -->
