@@ -29,4 +29,24 @@
     <!-- App List Screen -->
     <string name="app_list_title">Приложения</string>
     <string name="app_list_placeholder">Здесь будет статистика трафика приложений</string>
+
+    <!-- Detailed Screen -->
+    <string name="app_details_title">Подробности</string>
+    <string name="app_details_total_packets">Всего пакетов</string>
+    <string name="app_details_total_traffic">Всего трафика</string>
+    <string name="app_details_uplink">Отправлено</string>
+    <string name="app_details_downlink">Получено</string>
+    <string name="app_details_graph_title">Распределение веса пакетов (Последние %1$d)</string>
+    <string name="app_details_graph_no_data">Пока нет данных для графика...</string>
+    <string name="app_details_graph_no_data_session">Нет данных трафика для этого приложения в текущей сессии.</string>
+    <string name="app_details_graph_processing">Обработка данных для графика...</string>
+    <string name="app_details_coming_soon">Проведите вниз для дополнительной информации (Скоро)</string>
+    <string name="app_details_loading">Загрузка деталей приложения...</string>
+    <string name="app_details_error_loading">Ошибка загрузки деталей приложения.</string>
+    <string name="app_details_app_not_found">Приложение для этого UID не найдено.</string>
+    <string name="x_axis_label_packet_weight">Вес пакета (Байт)</string>
+    <string name="y_axis_label_packet_count">Количество пакетов</string>
+    <string name="app_details_loading_uid">UID: %1$d</string>
+    <string name="app_details_app_not_found_uid">Приложение для UID %1$d не найдено</string>
+    <string name="action_back">Назад</string>
 </resources>

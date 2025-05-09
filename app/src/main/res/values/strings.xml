@@ -29,4 +29,25 @@
     <!-- App List Screen -->
     <string name="app_list_title">Apps</string>
     <string name="app_list_placeholder">App traffic statistics will be shown here</string>
+
+    <!-- AppDetailsScreen -->
+    <string name="app_details_title">Details</string>
+    <string name="app_details_total_packets">Total Packets</string>
+    <string name="app_details_total_traffic">Total Traffic</string>
+    <string name="app_details_uplink">Uplink</string>
+    <string name="app_details_downlink">Downlink</string>
+    <string name="app_details_graph_title">Packet Weight Distribution (Last %1$d Packets)</string>
+    <string name="app_details_graph_no_data">No traffic data yet for graph...</string>
+    <string name="app_details_graph_no_data_session">No traffic data for this app in current session.</string>
+    <string name="app_details_graph_processing">Processing chart data...</string>
+    <string name="app_details_coming_soon">Swipe down for more details (Coming Soon)</string>
+    <string name="app_details_loading">Loading app details...</string>
+    <string name="app_details_error_loading">Error loading app details.</string>
+    <string name="app_details_app_not_found">App not found for this UID.</string>
+    <string name="x_axis_label_packet_weight">Packet Weight (Bytes)</string>
+    <string name="y_axis_label_packet_count">Packet Count</string>
+    <string name="app_details_loading_uid">UID: %1$d</string>
+    <string name="app_details_app_not_found_uid">App not found for UID: %1$d</string>
+    <string name="action_back">Back</string>
+
 </resources>

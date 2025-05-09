@@ -1,17 +1,12 @@
 package com.packet.analyzer.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Analytics
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,11 +17,13 @@ import com.packet.analyzer.data.model.AppInfo
 @Composable
 fun AppListItem(
     appInfo: AppInfo,
+    onDetailsClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onDetailsClick(appInfo.packageName) },
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
@@ -34,11 +31,14 @@ fun AppListItem(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(model = appInfo.icon),
-                contentDescription = "${appInfo.appName} icon",
-                modifier = Modifier.size(48.dp)
-            )
+            appInfo.icon?.let {
+                Image(
+                    painter = rememberAsyncImagePainter(model = it),
+                    contentDescription = "${appInfo.appName} icon",
+                    modifier = Modifier.size(48.dp)
+                )
+            } ?: Box(modifier = Modifier.size(48.dp).background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)))
+
 
             Spacer(modifier = Modifier.width(12.dp))
 
@@ -54,8 +54,15 @@ fun AppListItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                 )
             }
-            // Spacer(modifier = Modifier.width(8.dp))
-            // Column(horizontalAlignment = Alignment.End) { ... }
+
+
+            IconButton(onClick = { onDetailsClick(appInfo.packageName) }) {
+                Icon(
+                    imageVector = Icons.Filled.Analytics,
+                    contentDescription = "App Details",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }

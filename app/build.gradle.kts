@@ -80,7 +80,7 @@ dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:1.8.1")
+    implementation(libs.androidx.activity.compose)
 
     // TODO: Compose BOM (Bill of Materials) - Управляет версиями Compose библиотек
     // https://developer.android.com/jetpack/androidx/releases/compose-kotlin
@@ -104,6 +104,9 @@ dependencies {
 
     // ViewModel Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+
+    // MPAndroidChart library
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // DataStore Preferences
     implementation("androidx.datastore:datastore-preferences:1.1.4")
