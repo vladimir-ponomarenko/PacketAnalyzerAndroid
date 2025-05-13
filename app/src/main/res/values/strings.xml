@@ -16,6 +16,7 @@
     <string name="status_error">Error</string>
     <string name="status_checking_root">Checking Root…</string>
     <string name="status_no_root">Root access denied or unavailable</string>
+    <string name="status_error_root_required">Root required</string>
     <string name="status_root_unknown">Check Root Status in Settings</string>
 
     <!-- Settings Screen -->
@@ -28,6 +29,7 @@
 
     <!-- App List Screen -->
     <string name="app_list_title">Apps</string>
+    <string name="app_list_no_apps_found">No apps found</string>
     <string name="app_list_placeholder">App traffic statistics will be shown here</string>
 
     <!-- AppDetailsScreen -->

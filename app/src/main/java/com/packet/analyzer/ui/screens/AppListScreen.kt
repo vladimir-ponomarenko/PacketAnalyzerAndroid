@@ -1,5 +1,7 @@
 package com.packet.analyzer.ui.screens
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +23,7 @@ import com.packet.analyzer.ui.components.AppListItem
 import com.packet.analyzer.ui.components.ScreenHeader
 import com.packet.analyzer.ui.navigation.Screen
 import com.packet.analyzer.ui.viewmodel.AppListViewModel
+import com.packet.analyzer.ui.viewmodel.AppListScreenUiState
 
 @Composable
 fun AppListScreen(
@@ -32,42 +35,50 @@ fun AppListScreen(
 
     Column(modifier = Modifier.fillMaxSize()) {
         ScreenHeader(title = stringResource(id = R.string.app_list_title))
+        // TODO: Добавить кнопку для viewModel.toggleIncludeSystemApps()
 
         Box(
             modifier = Modifier.weight(1f).fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             when {
-                uiState.isLoading -> CircularProgressIndicator()
+                uiState.isLoadingApps -> CircularProgressIndicator()
                 uiState.error != null -> Text(
                     text = uiState.error!!,
                     color = MaterialTheme.colorScheme.error,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(16.dp)
                 )
+                uiState.appItems.isEmpty() && !uiState.isLoadingApps -> Text(
+                    text = stringResource(R.string.app_list_no_apps_found),
+                    modifier = Modifier.padding(16.dp)
+                )
                 else -> {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(items = uiState.apps, key = { it.packageName }) { appInfo ->
+
+                        items(items = uiState.appItems, key = { it.appInfo.packageName }) { itemData ->
                             AppListItem(
-                                appInfo = appInfo,
+                                itemData = itemData,
                                 onDetailsClick = { packageName ->
-
-
                                     val uid = try {
                                         context.packageManager.getPackageUid(packageName, 0)
+                                    } catch (e: PackageManager.NameNotFoundException) {
+                                        Log.w("AppListScreen", "UID not found for $packageName on click", e)
+                                        -1
                                     } catch (e: Exception) {
-                                        Log.e("AppListScreen", "Could not get UID for $packageName", e)
+                                        Log.e("AppListScreen", "Error getting UID for $packageName on click", e)
                                         -1
                                     }
+
                                     if (uid != -1) {
                                         navController.navigate(Screen.AppDetails.createRoute(uid))
                                     } else {
+                                        Log.e("AppListScreen", "Could not navigate: Invalid UID for $packageName")
 
-                                        Log.w("AppListScreen", "Invalid UID for $packageName, cannot navigate.")
                                     }
                                 }
                             )
@@ -76,6 +87,5 @@ fun AppListScreen(
                 }
             }
         }
-        // TODO: Кнопка фильтра системных приложений
     }
 }

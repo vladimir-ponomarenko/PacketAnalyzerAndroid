@@ -105,6 +105,7 @@ class AppDetailsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             var foundApp: AppInfo? = null
             try {
+                // Используем applicationContext, который уже внедрен
                 val packages = applicationContext.packageManager.getPackagesForUid(uid)
                 if (packages != null && packages.isNotEmpty()) {
                     val packageName = packages[0]
@@ -119,11 +120,8 @@ class AppDetailsViewModel @Inject constructor(
                 Log.e("AppDetailsViewModel", "Error loading app info for UID $uid via packageManager", e)
             }
 
-
             _uiState.update {
                 it.copy(
-
-
                     appInfo = it.appInfo ?: foundApp ?: AppInfo("UID: $uid", "unknown.uid.$uid", null),
                     isLoading = false
                 )

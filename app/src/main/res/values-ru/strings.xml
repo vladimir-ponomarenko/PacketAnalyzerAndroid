@@ -16,6 +16,7 @@
     <string name="status_error">Ошибка</string>
     <string name="status_checking_root">Проверка Root…</string>
     <string name="status_no_root">Root-доступ запрещен или недоступен</string>
+    <string name="status_error_root_required">Требуется root</string>
     <string name="status_root_unknown">Проверьте Root в Настройках</string>
 
     <!-- Settings Screen -->
@@ -28,6 +29,7 @@
 
     <!-- App List Screen -->
     <string name="app_list_title">Приложения</string>
+    <string name="app_list_no_apps_found">Не найдено прилжений</string>
     <string name="app_list_placeholder">Здесь будет статистика трафика приложений</string>
 
     <!-- Detailed Screen -->

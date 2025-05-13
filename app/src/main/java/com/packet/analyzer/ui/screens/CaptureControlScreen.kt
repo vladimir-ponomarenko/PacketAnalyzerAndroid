@@ -1,18 +1,9 @@
 package com.packet.analyzer.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,9 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.packet.analyzer.data.util.RootStatus
+import com.packet.analyzer.R
 import com.packet.analyzer.ui.viewmodel.CaptureControlViewModel
-import com.packet.analyzer.ui.viewmodel.CaptureUiState
+import com.packet.analyzer.ui.viewmodel.CaptureControlScreenUiState
+import com.packet.analyzer.util.FormatUtils
 
 @Composable
 fun CaptureControlScreen(
@@ -35,23 +27,25 @@ fun CaptureControlScreen(
 
     CaptureControlContent(
         uiState = uiState,
-        onCaptureToggle = viewModel::toggleCaptureState,
+        onToggleCapture = viewModel::toggleCaptureState,
+        onCheckRoot = { viewModel.checkRootAccess(showLoading = true) },
         onClearError = viewModel::clearError
     )
 }
 
 @Composable
 fun CaptureControlContent(
-    uiState: CaptureUiState,
-    onCaptureToggle: () -> Unit,
+    uiState: CaptureControlScreenUiState,
+    onToggleCapture: () -> Unit,
+    onCheckRoot: () -> Unit,
     onClearError: () -> Unit
 ) {
     val statusTextColor = when {
         uiState.error != null -> MaterialTheme.colorScheme.error
-        uiState.rootStatus == RootStatus.DENIED || uiState.rootStatus == RootStatus.UNKNOWN -> Color(0xFFFFA726)
+        uiState.rootStatus == com.packet.analyzer.data.util.RootStatus.DENIED ||
+                uiState.rootStatus == com.packet.analyzer.data.util.RootStatus.UNKNOWN -> Color(0xFFFFA726)
         else -> MaterialTheme.colorScheme.onSurface
     }
-
 
     Column(
         modifier = Modifier
@@ -60,26 +54,33 @@ fun CaptureControlContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
         Button(
-            onClick = onCaptureToggle,
-            modifier = Modifier
-                .size(200.dp),
+            onClick = onToggleCapture,
+            modifier = Modifier.size(180.dp),
             shape = CircleShape,
             enabled = uiState.isButtonEnabled,
             colors = ButtonDefaults.buttonColors(
+
                 containerColor = if (uiState.isCapturing) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
-                disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+                contentColor = if (uiState.isCapturing) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onPrimary,
+
+                disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             ),
-            contentPadding = PaddingValues(0.dp)
+            contentPadding = PaddingValues(16.dp)
         ) {
             Text(
                 text = stringResource(id = uiState.buttonTextResId),
                 style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                // maxLines = 2,
+                // softWrap = true
             )
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
+
 
         Text(
             text = stringResource(id = uiState.statusTextResId),
@@ -88,14 +89,34 @@ fun CaptureControlContent(
             textAlign = TextAlign.Center
         )
 
+
+        if (uiState.isCapturing || uiState.totalSessionPackets > 0) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Session: ${FormatUtils.formatBytes(uiState.totalSessionTraffic)} (${uiState.totalSessionPackets} packets)",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+
         uiState.error?.let { errorMsg ->
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = errorMsg,
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.clickable(onClick = onClearError)
             )
+        }
+
+
+        if (uiState.rootStatus != com.packet.analyzer.data.util.RootStatus.GRANTED && !uiState.isOperationInProgress && !uiState.isCapturing) {
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedButton(onClick = onCheckRoot) {
+                Text("Check Root Access") // TODO: Строковый ресурс
+            }
         }
     }
 }
