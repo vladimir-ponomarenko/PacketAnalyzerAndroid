@@ -26,6 +26,9 @@
     <string name="settings_root_status_granted">Предоставлен</string>
     <string name="settings_root_status_denied">Отказано</string>
     <string name="settings_root_status_unknown">Неизвестный статус</string>
+    <string name="setting_include_system_apps">Включать системные приложения</string>
+    <string name="action_collapse">Свернуть</string>
+    <string name="action_expand">Развернуть</string>
 
     <!-- App List Screen -->
     <string name="app_list_title">Приложения</string>
@@ -51,4 +54,14 @@
     <string name="app_details_loading_uid">UID: %1$d</string>
     <string name="app_details_app_not_found_uid">Приложение для UID %1$d не найдено</string>
     <string name="action_back">Назад</string>
+
+    <!-- AllAppsDetailsScreen -->
+    <string name="overall_stats_title">Общая статистика</string>
+    <string name="overall_stats_icon_desc">Иконка общей статистики трафика</string>
+    <string name="overall_stats_details_desc">Посмотреть детали общей статистики</string>
+    <string name="overall_stats_total_packets">Всего пакетов</string>
+    <string name="overall_stats_total_traffic">Всего трафика</string>
+    <string name="overall_stats_uplink">Всего отправлено</string>
+    <string name="overall_stats_downlink">Всего получено</string>
+
 </resources>

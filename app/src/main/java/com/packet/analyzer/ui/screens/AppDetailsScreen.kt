@@ -116,11 +116,11 @@ fun AppDetailsContent(
             }
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text(
-                stringResource(R.string.app_details_graph_title, MAX_GRAPH_PACKET_SAMPLES),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
+//            Text(
+//                stringResource(R.string.app_details_graph_title, MAX_GRAPH_PACKET_SAMPLES),
+//                style = MaterialTheme.typography.titleMedium,
+//                modifier = Modifier.align(Alignment.CenterHorizontally)
+//            )
             Spacer(modifier = Modifier.height(8.dp))
 
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -145,11 +145,11 @@ fun AppDetailsContent(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            Text(
-                stringResource(R.string.app_details_coming_soon),
-                modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+//            Text(
+//                stringResource(R.string.app_details_coming_soon),
+//                modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp),
+//                color = MaterialTheme.colorScheme.onSurfaceVariant
+//            )
         }
     }
 }

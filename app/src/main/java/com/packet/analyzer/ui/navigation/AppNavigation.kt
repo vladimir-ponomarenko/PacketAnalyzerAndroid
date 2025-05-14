@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.packet.analyzer.R
 
-
 sealed class Screen(
     val route: String,
     @StringRes val resourceId: Int,
@@ -25,6 +24,8 @@ sealed class Screen(
         icon = Icons.Filled.Info
     ) {
         fun createRoute(appUid: Int) = "app_details/$appUid"
+
+        const val OVERALL_STATS_UID = -100
     }
 }
 

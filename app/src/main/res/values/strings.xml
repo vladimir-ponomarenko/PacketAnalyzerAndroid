@@ -26,6 +26,9 @@
     <string name="settings_root_status_granted">Granted</string>
     <string name="settings_root_status_denied">Denied</string>
     <string name="settings_root_status_unknown">Unknown</string>
+    <string name="setting_include_system_apps">Include system apps</string>
+    <string name="action_collapse">Collapse</string>
+    <string name="action_expand">Expand</string>
 
     <!-- App List Screen -->
     <string name="app_list_title">Apps</string>
@@ -51,5 +54,14 @@
     <string name="app_details_loading_uid">UID: %1$d</string>
     <string name="app_details_app_not_found_uid">App not found for UID: %1$d</string>
     <string name="action_back">Back</string>
+
+    <!-- AllAppsDetailsScreen -->
+    <string name="overall_stats_title">Overall Statistics</string>
+    <string name="overall_stats_icon_desc">Overall traffic statistics icon</string>
+    <string name="overall_stats_details_desc">View overall traffic details</string>
+    <string name="overall_stats_total_packets">Total Packets</string>
+    <string name="overall_stats_total_traffic">Total Traffic</string>
+    <string name="overall_stats_uplink">Total Uplink</string>
+    <string name="overall_stats_downlink">Total Downlink</string>
 
 </resources>

@@ -2,7 +2,7 @@ package com.packet.analyzer.data.model
 
 import java.util.LinkedList
 
-const val MAX_GRAPH_PACKET_SAMPLES = 10000
+const val MAX_GRAPH_PACKET_SAMPLES = 1000000
 
 data class AppSessionTrafficData(
     val uid: Int,
